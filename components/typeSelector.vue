@@ -1,10 +1,16 @@
 <template>
-$END$
+<div>
+  <select id="selectCardType">
+    <option v-for="type in cardType">
+      {{type}}
+    </option>
+  </select>
+</div>
 </template>
 
 <script>
 export default {
-name: "typeSelector"
+props:['cardType']
 }
 </script>
 

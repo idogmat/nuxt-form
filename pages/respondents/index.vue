@@ -1,6 +1,7 @@
 <template>
   <div>
     <SecondNav></SecondNav>
+
     {{ this.$route.path }}
   </div>
 </template>

@@ -1,78 +1,101 @@
 <template>
-  <div class='todo-list' id='todo-list-app'>
-    <transition-group name='bounce' tag='div'>
-      <div class='list-item' v-for='(item, index) in items' :key='item'>
-        <div class='title'
-             contenteditable='true'
-             autocomplete='off'
-             autocorrect='off'
-             autocapitalize='off'
-             spellcheck='false'
-             tabindex='0'
-             :title='messages.editTitle'
-             @keyup='updateItem(index)'
-             @blur='updateItem(index)'
-             @paste='updateItem(index)'
-             @delete='updateItem(index)'>{{ item.title }}</div>
-        <div class='text'
-             contenteditable='true'
-             autocomplete='off'
-             autocorrect='off'
-             autocapitalize='off'
-             spellcheck='false'
-             tabindex='0'
-             :title='messages.editText'
-             @keyup='updateItem(index)'
-             @blur='updateItem(index)'
-             @paste='updateItem(index)'
-             @delete='updateItem(index)'>{{ item.text }}</div>
-        <div class='delete-button'
-             tabindex='0'
-             :title='messages.delete'
-             @click='deleteItem(item)'
-             @keyup.enter='deleteItem(item)'>
-          <span class='fa fa-trash'></span>
-        </div>
-      </div>
-    </transition-group>
-    <div class='add-button'
-         id='add-new'
-         tabindex='0'
-         :title='messages.add'
-         @click='addNewItem'
-         @keyup.enter='addNewItem'>
-      <span class='fa fa-plus'></span>
+  <div>
+    <select id="selectedQuestion" v-model="selected" @change="onChange($event)">
+      <option v-for="question in questions">
+        {{ question }}
+      </option>
+    </select>
+    <div v-if="selected === questions.age">
+      <ageInput :answer="answer"
+                v-for="answer in answers.age"
+                :key="answers.age.length"></ageInput>
+      <button @click="addForm($event)" id="addAge">addAgeForm</button>
     </div>
+    <div v-if="selected === questions.cardType">
+      <typeSelector :cardType="cardType"
+                    v-for="cardType in answers.type"
+                    :key="answers.type.length"></typeSelector>
+      <button @click="addForm($event)" id="addType">addTypeForm</button>
+    </div>
+    <div v-if="selected === questions.cardStatus">
+      <statusSelector :cardStatus="cardStatus"
+                      v-for="cardStatus in answers.status"
+                      :key="answers.status.length"></statusSelector>
+      <button @click="addForm($event)" id="addStatus">addStatusForm</button>
+    </div>
+    <button @click="checkSelector">CHUDO BTN</button>
   </div>
 </template>
 
 <script>
+import ageInput from "~/components/ageInput";
+import typeSelector from "~/components/typeSelector";
+import statusSelector from "~/components/statusSelector";
+
 export default {
-  name: "forms",
-  data: {
-    items: [
-      {
-        title: 'Learn Vue.js',
-        text: 'Read the official guide and create a simple to-do list.'
+  components: {
+    ageInput,
+    typeSelector,
+    statusSelector
+  },
+  data() {
+    return {
+      selected: '',
+      questions: {
+        age: 'Возраст',
+        cardType: 'Тип карты',
+        cardStatus: 'Статус карты'
       },
-      {
-        title: 'Publish learning results',
-        text: 'Create a pen with the results'
+      cardType: ['Gold', 'silver', 'bronze', 'iron'],
+      cardStatus: ['Active', 'Disable', 'Blocked'],
+      answers: {
+        age: [],
+        type: [],
+        status: []
       }
-    ],
-    messages: {
-      delete: 'Delete this item',
-      add: 'Add new item',
-      editTitle: 'Edit title',
-      editText: 'Edit text'
     }
   },
   methods: {
-    addNewItem() {
-      this.items.push({
-        title: 'Your title here',
-        text: 'Your text here'
-      });
+    checkSelector() {
+      console.log(this.selected)
+    },
+    onChange(evt) {
+      console.log(evt.target.value)
+      switch (evt.target.value) {
+        case 'Возраст':
+          this.answers.age.push(evt.target.value)
+          break
+        case 'Тип карты':
+          this.answers.type.push(this.cardType)
+          break
+        case 'Статус карты':
+          this.answers.status.push(this.cardStatus)
+          break
+      }
+      console.log(evt.target.value)
+      console.log(this.answers.age);
+    },
+    addForm(event) {
+      console.log(this.answers.age.length)
+      console.log(event.target.id)
+      switch (event.target.id) {
+        case 'addAge':
+          this.answers.age.push(this.answers.age[0])
+          break
+        case 'addType':
+          this.answers.type.push(this.answers.type[0])
+          break
+        case 'addStatus':
+          this.answers.status.push(this.answers.status[0])
+          break
+      }
+      //   console.log(event.target.id)
+      //   console.log(this.answers.age)
+      // this.answers.age.push(this.answers.age[0])
+      //     id: this.questions.age.length+1,
+      //     title: this.questions.age,
+      //     isComplete: false
+      //   });
     },
     deleteItem(item) {
       let index = this.items.indexOf(item);
@@ -80,9 +103,10 @@ export default {
     },
     updateItem(index) {
       this.items[index].title = this.$el.querySelector('.title').innerText;
-      this.items[index].text  = this.$el.querySelector('.text').innerText;
+      this.items[index].text = this.$el.querySelector('.text').innerText;
     }
-  }
+  },
+
 }
 </script>
 

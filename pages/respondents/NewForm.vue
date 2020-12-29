@@ -1,45 +1,25 @@
 <template>
-  <section>
-    <h1>Add New Employee</h1>
-    <form class="cf" @submit.prevent="handleSubmit">
-      <div class="half left cf">
-        <input type="text" id="input-name" placeholder="First Name" v-model="user.firstname">
-        <input type="text" id="input-surname" placeholder="Last Name" v-model="user.lastname">
-        <input type="text" id="input-phone" placeholder="Phone #" v-model="user.phone">
-      </div>
-      <div class="half right cf">
-        <textarea name="message" type="text" id="input-message" placeholder="Message"></textarea>
-      </div>
-      <input type="submit" value="Submit" id="input-submit">
-    </form>
-  </section>
+  <div>
+    <SecondNav></SecondNav>
+    <section class="form-container">
+      <form-constructor></form-constructor>
+      </section>
+  </div>
 </template>
 
 <script>
 import axios from "axios";
-
+import FormConstructor from "~/components/FormConstructor";
 export default {
-  data() {
-    return {
-      user: {
-        firstname: "",
-        lastname: "",
-        phone: ""
-      }
-    };
-  },
-  methods: {
-    handleSubmit() {
-      axios.post("/submit", this.$data).then(() => {
-        console.log(this.$data)
-      });
-    }
-  }
+  components: {FormConstructor}
 };
 </script>
 
 <style>
-
+.form-container{
+  width: 100%;
+  height: 100%;
+}
 *,
 *:before,
 *:after {
@@ -66,6 +46,7 @@ form {
   text-align: center;
   margin: 20px auto;
 }
+
 form input,
 form textarea {
   border: 0;
@@ -83,22 +64,26 @@ form textarea {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   resize: none;
 }
+
 form input:focus,
 form textarea:focus {
   -moz-box-shadow: 0 0px 2px #e74c3c !important;
   -webkit-box-shadow: 0 0px 2px #e74c3c !important;
   box-shadow: 0 0px 2px #e74c3c !important;
 }
+
 form #input-submit {
   color: white;
   background: #e74c3c;
   cursor: pointer;
 }
+
 form #input-submit:hover {
   -moz-box-shadow: 0 1px 1px 1px rgba(170, 170, 170, 0.6);
   -webkit-box-shadow: 0 1px 1px 1px rgba(170, 170, 170, 0.6);
   box-shadow: 0 1px 1px 1px rgba(170, 170, 170, 0.6);
 }
+
 form textarea {
   height: 126px;
 }
@@ -124,6 +109,7 @@ form textarea {
     margin-bottom: 0;
   }
 }
+
 /* Clearfix */
 .cf:before,
 .cf:after {

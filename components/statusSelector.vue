@@ -1,10 +1,14 @@
 <template>
-$END$
+  <select id="selectCardStatus">
+    <option v-for="status in cardStatus">
+      {{status}}
+    </option>
+  </select>
 </template>
 
 <script>
 export default {
-name: "statusSelector"
+props:['cardStatus']
 }
 </script>
 

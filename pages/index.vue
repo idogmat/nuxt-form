@@ -4,11 +4,11 @@
     {{this.$route.path}}
   </div>
 </template>
-
 <script>
-
+import SecondNav from '@/components/secondNav'
+export default {
+  components:{
+    SecondNav
+  }
+}
 </script>
-
-<style scoped>
-
-</style>
