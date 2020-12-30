@@ -1,6 +1,6 @@
 <template>
   <div>
-    <select id="selectedQuestion" v-model="selected" >
+    <select id="selectedQuestion" v-model="selected" @change="onChange($event)">
       <option v-for="question in questions">
         {{ question }}
       </option>
@@ -8,7 +8,6 @@
     <div v-if="selected === questions.age">
       <ageInput :answer="answer"
                 v-for="answer in answers.age"
-                :id="answers.age.length"
                 :key="answers.age.length"></ageInput>
       <button @click="addForm($event)" id="addAge">addAgeForm</button>
     </div>
@@ -72,7 +71,7 @@ export default {
         case 'Возраст':
           console.log(this.selected)
           this.answers.age.push(evt.target.value)
-          this.sections.age.push(evt.target.value)
+          // this.sections.age.push(evt.target.value)
           break
         case 'Тип карты':
           this.answers.type.push(this.cardType)
