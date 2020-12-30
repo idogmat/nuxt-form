@@ -1,6 +1,6 @@
 <template>
   <div>
-    <select id="selectedQuestion" v-model="selected" @change="onChange($event)">
+    <select id="selectedQuestion" v-model="selected" >
       <option v-for="question in questions">
         {{ question }}
       </option>
@@ -8,6 +8,7 @@
     <div v-if="selected === questions.age">
       <ageInput :answer="answer"
                 v-for="answer in answers.age"
+                :id="answers.age.length"
                 :key="answers.age.length"></ageInput>
       <button @click="addForm($event)" id="addAge">addAgeForm</button>
     </div>
@@ -31,12 +32,13 @@
 import ageInput from "~/components/ageInput";
 import typeSelector from "~/components/typeSelector";
 import statusSelector from "~/components/statusSelector";
-
+import sectionSelector from "@/components/sectionSelector";
 export default {
   components: {
     ageInput,
     typeSelector,
-    statusSelector
+    statusSelector,
+    sectionSelector
   },
   data() {
     return {
@@ -45,6 +47,11 @@ export default {
         age: 'Возраст',
         cardType: 'Тип карты',
         cardStatus: 'Статус карты'
+      },
+      sections:{
+        age:{},
+        cardType:{},
+        cardStatus:{}
       },
       cardType: ['Gold', 'silver', 'bronze', 'iron'],
       cardStatus: ['Active', 'Disable', 'Blocked'],
@@ -63,7 +70,9 @@ export default {
       console.log(evt.target.value)
       switch (evt.target.value) {
         case 'Возраст':
+          console.log(this.selected)
           this.answers.age.push(evt.target.value)
+          this.sections.age.push(evt.target.value)
           break
         case 'Тип карты':
           this.answers.type.push(this.cardType)
